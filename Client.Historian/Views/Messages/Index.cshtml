@@ -1,0 +1,54 @@
+﻿@{
+    ViewBag.Title = "Messages for last 10 minutes";
+}
+
+<h2>Messages for last 10 minutes</h2>
+
+<div id="messageHistory"></div>
+
+<script>
+    function loadMessages() {
+        const endDate = new Date(); // Current time
+        const startDate = new Date(endDate.getTime() - 10 * 60 * 1000); // 10 minutes ago
+
+        // Ensure full ISO format including milliseconds
+        const from = startDate.toISOString(); // Full format with milliseconds
+        const to = endDate.toISOString();     // Full format with milliseconds
+
+            const apiUrl = 'http://localhost:5241/api';
+        const url = `${apiUrl}/Message?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`;
+
+        fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                const historyContainer = document.getElementById('messageHistory');
+                historyContainer.innerHTML = '';
+
+                if (data.length === 0) {
+                    historyContainer.innerHTML = '<p>No messages found in the last 10 minutes.</p>';
+                    return;
+                }
+
+                data.forEach(message => {
+                    const messageElement = document.createElement('div');
+                    messageElement.textContent = `Message ID: ${message.id}, Content: ${message.content}, Received at: ${new Date(message.timestamp).toLocaleString()}`;
+                    historyContainer.appendChild(messageElement);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching messages:', error);
+                alert('An error occurred while fetching messages.');
+            });
+    }
+
+    // Auto-refresh messages every 10 seconds
+//    setInterval(loadMessages, 10000);
+
+    // Load messages on page load
+    window.onload = loadMessages;
+</script>
