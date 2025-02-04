@@ -25,9 +25,8 @@ This project consists of multiple services running in **Docker containers**, pro
 ## 📥 Installation & Setup
 
 ### 1️⃣ Clone the Repository
-sh
 
 2️⃣ Build and Run the Application with Docker
-sh
+
 docker-compose up --build
 This will start all services within Docker containers.
