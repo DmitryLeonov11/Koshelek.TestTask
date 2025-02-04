@@ -25,7 +25,7 @@ This project consists of multiple services running in **Docker containers**, pro
 ## 📥 Installation & Setup
 
 ### 1️⃣ Clone the Repository
-```sh
+sh
 
 2️⃣ Build and Run the Application with Docker
 sh
